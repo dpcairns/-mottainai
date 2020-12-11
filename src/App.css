@@ -1,38 +1,227 @@
+* {
+  box-sizing: border-box;
+}
+
+body, html {
+  --card-height: 70px;
+  font-size: 12px;
+  height: 100%;
+  background: lightgray;
+}
+
+#root {
+  height: 100%;
+}
+
+.container  {
+  display: grid;
+  grid-template-rows: auto;
+
+}
 .App {
+  padding: 10px;
+  padding-left: 80px;
+  padding-right: 80px;
+  width: 80%;
+  height: 100%;
+  margin: auto;
+  background-color: white;
+  overflow: scroll;
+}
+
+.card {
+  border: solid 1px black;
+  width: 50px;
+  min-height: var(--card-height);
+  padding: 5px;
+  margin: 2px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card > .role {
+  text-align: right;
+}
+
+.card > .number {
+  text-align: right;
+}
+
+.card > .material {
+  text-align: right;
+  font-style: italic;
+}
+
+.facedown {
+  background: white;
+}
+.clerk {
+  background: hotpink;
+}
+.monk {
+  background: lightgreen;
+}
+.tailor {
+  background: lightgray;
+}
+.potter {
+  background: orange;
+}
+.smith {
+  background: lightblue;
+}
+
+.decks {
+  display: flex;
+  justify-content: space-around;
+}
+
+.deck {
+  padding: 5px;
+  min-height: var(--card-height);
+  position: relative;
+}
+
+.deck > .card {
+  position: absolute;
+}
+
+.task-and-hand {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 20% 80%;
+}
+
+.hand { 
+  display: flex;
+  flex-wrap: wrap;
+  min-height: var(--card-height)
+}
+
+.task {
+  min-height: var(--card-height)
+}
+
+.floor-container {
+  min-height: var(--card-height);
+  width: 100%;
+}
+
+.works-container {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  min-height: var(--card-height)
+}
+
+.works {
+  min-height: var(--card-height);
+  width: 100%;
+}
+
+.floor { 
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  min-height: var(--card-height)
+}
+
+.button-container {
+  padding: 10px;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.border {
+  margin: 5px;
+  border: solid 1px black;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+.padding {
+  padding: 10px;
+}
+
+.blur {
+  filter: blur(2px);
+}
+
+.highlight {
+  border: solid 1px cyan;
+  background-color: lightcyan;
+  box-shadow: 0px;
+  cursor: pointer;
+  transition: all .2s;
+  animation: pulse 2s infinite;
+}
+
+.highlight:hover {
+  background-color: rgb(211, 255, 255);
+  box-shadow: 1px 1px 1px 1px grey;
+}
+
+button {
+  font-size: .8em;
+}
+
+.start {
+  z-index: 10;
+  width: 200px;
+  position: absolute;
+  height: 100px;
+  top: calc(50% - 50px);
+  left: calc(50% - 100px);
+}
+
+.start > button {
+  width: 100%;
+  height: 100%;
+}
+
+.helpers-bench-and-sales {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+button:enabled {
+  cursor: pointer;
+  border: solid 1px black;
+  background-color: lightcyan;
+  animation: pulse 2s infinite;
+}
+
+
+@keyframes pulse {
+	0% {
+    transform: scale(0.95);
+    box-shadow: 1px 1px 1px 1px lightgrey;
+	}
+
+	70% {
+    transform: scale(1);
+    box-shadow: 1px 10px 10px 1px lightgrey;
   }
+
+	100% {
+    transform: scale(0.95);
+    box-shadow: 1px 1px 1px 1px lightgrey;
+	}
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
 
-.App-link {
-  color: #61dafb;
-}
+@keyframes pulse2 {
+	0% {
+    transform: scale(0.99);
+    box-shadow: 1px 1px 1px 1px lightgrey;
+	}
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+	70% {
+    transform: scale(1);
+    box-shadow: 10px 10px 10px 10px lightgrey;
   }
-  to {
-    transform: rotate(360deg);
-  }
+
+	100% {
+    transform: scale(0.99);
+    box-shadow: 1px 1px 1px 1px lightgrey;
+	}
 }
