@@ -9,6 +9,9 @@ export const DO_TASK = 'Do Task';
 export const PREGAME = 'Pre Game';
 export const WAIT_FOR_NEXT_TURN = 'Pick up cards from the waiting area.';
 
+export const GALLERY = 'gallery';
+export const WORKSHOP = 'workshop';
+
 const NO_TASK = {};
 
 function shuffle(array) {
@@ -18,24 +21,22 @@ function shuffle(array) {
 export function useGame() {
     const [gameId, changeGameId] = useState(Math.random())
     const [stage, changeStage] = useState(PREGAME);
-    const [works, changeWorks] = useState([]);
+    const [works, changeWorks] = useState({
+      [GALLERY]: [],
+      [WORKSHOP]: [],
+    });
     const [helpers, changeHelpers] = useState([]);
     const [craftBench, changeCraftBench] = useState([]);
     const [deck, changeDeck] = useState([]);
     const [sales, changeSales] = useState([]);
     const [actionsQueue, changeActionsQueue] = useState([]);
     const [hand, changeHand] = useState([]);
-    const [task, changeTaskCore] = useState(NO_TASK);
+    const [task, changeTask] = useState(NO_TASK);
     const [floor, changeFloor] = useState([]);
     const [waitingArea, changeWaitingArea] = useState([]);
 
 
-  function changeTask(args) {
-    console.log('=============================\n')
-    console.log('|| changing task to . . .', args)
-    console.log('\n=============================')
-    changeTaskCore(args);
-  };
+
 
   useEffect(() => {
         shuffle(defaultDeck)
@@ -136,18 +137,27 @@ export function useGame() {
     function craftOrSmith(smithingCardInHand) {
       const roleOfCardToBuild = smithingCardInHand.role || task.role;
       const cardInHandToBuildIndex = hand.findIndex(card => card.role === roleOfCardToBuild);
+
+      const confirmGallery = confirm('Build in Gallery to cover sales?'); // eslint-disable-line
       
-      // TODO: build in gallery or shop
-      changeWorks([...works, hand[cardInHandToBuildIndex]]);
+      const whereToBuild = confirmGallery ? GALLERY : WORKSHOP;
+      const currentWorksInThatWing = works[whereToBuild];
+      const newWorksInThatWing = [...currentWorksInThatWing, hand[cardInHandToBuildIndex]];
+      changeWorks({
+        ...works,
+        [whereToBuild]: newWorksInThatWing
+      });
 
       const handWithoutWork = removeByIndex(hand, cardInHandToBuildIndex);
 
       changeHand(handWithoutWork);
 
+      // TODO: remove redundant cleanup on smithing. incorporate craft into evaluateTask, where all tasks are wrapped like this?
       cleanupAction();
     }
 
-    const coveredMap = works.reduce((acc, work) => {
+    // TODO: make helpers covered map
+    const coveredMap = works.gallery.reduce((acc, work) => {
       if (acc[work.role]) {
         acc[work.role] += work.number
       } else {
@@ -172,7 +182,8 @@ export function useGame() {
         return acc;
     }, 0)
 
-    const worksScore = works.reduce((acc, work) => acc + work.number, 0);
+    const scoreWorksInWing = (wing) => works[wing].reduce((acc, work) => acc + work.number, 0)
+    const worksScore = scoreWorksInWing(GALLERY) + scoreWorksInWing(WORKSHOP);
     
     const taskFunction = useEvaluateTask({ 
       helpers,

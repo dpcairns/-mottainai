@@ -20,7 +20,7 @@ export default function Task({
             }
           </div>
           <button disabled={!highlight} onClick={pray}>Pray</button>
-          <button disabled={!canCraft || !highlight} onClick={craft}>Craft</button>
+          <button disabled={!canCraft || !highlight} className={canCraft && highlight ? 'wiggle' : ''} onClick={craft}>Craft</button>
         </div>
     )
 }

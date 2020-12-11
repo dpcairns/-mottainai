@@ -4,6 +4,8 @@
 
 body, html {
   --card-height: 70px;
+  --card-height-plus: calc(var(--card-height) +  10px);
+
   font-size: 12px;
   height: 100%;
   background: lightgray;
@@ -79,7 +81,7 @@ body, html {
 
 .deck {
   padding: 5px;
-  min-height: var(--card-height);
+  min-height: var(--card-height-plus);
   position: relative;
 }
 
@@ -96,35 +98,52 @@ body, html {
 .hand { 
   display: flex;
   flex-wrap: wrap;
-  min-height: var(--card-height)
+  min-height: var(--card-height-plus)
 }
 
 .task {
-  min-height: var(--card-height)
+  min-height: var(--card-height-plus)
 }
 
 .floor-container {
-  min-height: var(--card-height);
+  min-height: var(--card-height-plus);
   width: 100%;
+}
+
+.text-center {
+  text-align: center;
+  text-decoration: underline;
 }
 
 .works-container {
   width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  min-height: var(--card-height)
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 }
 
 .works {
-  min-height: var(--card-height);
+  border: solid 1px grey;
+  min-height: var(--card-height-plus);
   width: 100%;
+}
+
+.gallery {
+  margin: 5px;
+  min-height: var(--card-height-plus)
+
+}
+
+.workshop {
+  margin: 5px;
+  min-height: var(--card-height-plus)
+
 }
 
 .floor { 
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  min-height: var(--card-height)
+  min-height: var(--card-height-plus)
 }
 
 .button-container {
