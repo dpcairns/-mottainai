@@ -8,6 +8,7 @@ export default function Card({
     },
     index,
     facedown, 
+    wiggle,
     onClick = () => {},
  }) {
     const { number, material } = roles[role] || {};
@@ -20,7 +21,7 @@ export default function Card({
     return (
         <div
             onClick={() => onClick({ role, id })}
-            className={`${facedown ? 'facedown' : role} card`} 
+            className={`${facedown ? 'facedown' : role} card ${wiggle ? 'wiggle' : ''}`} 
             style={style}>
             {
                 facedown || <>

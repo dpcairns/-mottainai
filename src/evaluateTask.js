@@ -6,19 +6,25 @@ import {
     POTTER,
  } from './roles.js';
 import { removeByIndex } from './utils.js';
-import roles from './roles.js';
 
-export default function evaluateTask({
-        helpers, changeHelpers,
-        changeCraftBench, craftBench,
-        startNewTurn,moveTasksToFloor, placeTask, 
-        pickUpWaitingArea, drawCard, deck, changeDeck, 
-        floor, changeFloor, gameId, changeGameId, sales, changeSales,
-        changeStage, changeActionsQueue, actionsQueue,
-        hand, changeHand, task, changeTask, cleanupAction,
-        waitingArea, changeWaitingArea } ) {
+export default function useEvaluateTask({
+    helpers,
+    changeHelpers,
+    changeCraftBench,
+    craftBench,
+    deck,
+    changeDeck,
+    floor,
+    changeFloor,
+    sales,
+    changeSales,
+    hand,
+    task,
+    cleanupAction,
+    changeWaitingArea,
+    craftOrSmith }
+) {
             const taskMap = {
-
                 [CLERK]: (card) => {
                     const cardIndex = craftBench.findIndex(benchCard => benchCard.id === card.id)
                     const newBench = removeByIndex(craftBench, cardIndex);
@@ -40,8 +46,8 @@ export default function evaluateTask({
                     changeWaitingArea(newCards)
                     changeDeck(newDeck);
                 },
-                [SMITH]: () => {
-                    console.log(roles[SMITH].taskInstructions)
+                [SMITH]: (card) => {
+                    craftOrSmith(card);
                 },
                 [POTTER]: (card) => {
                     const cardIndex = floor.findIndex(floorCard => floorCard.id === card.id)

@@ -17,6 +17,7 @@ import {
  } from './useGame.js';
 import { CLERK, MONK, POTTER, SMITH, TAILOR } from './roles.js';
 import roles from './roles.js';
+import useEvaluateTask from './evaluateTask';
 
 function App() {
 
@@ -39,13 +40,20 @@ function App() {
       changeDeck,
       changeFloor,
       startGame,
-      getTaskFunction,
       canCraft,
-      craft,
+      craftOrSmith,
+      canSmith,
+      salesScore,
+      worksScore,
+      coveredMap,
+      taskFunction,
+      canSmithMap,
   } = useGame();
+
   
+  const smithingTime = (stage === DO_TASK && task.role === SMITH && canSmith)
   const highlightFloor = (stage === DO_TASK && (task.role === POTTER || task.role === MONK));
-  const highlightHand = stage === SELECT_TASK || (stage === DO_TASK && task.role === SMITH);
+  const highlightHand = stage === SELECT_TASK || smithingTime;
   const highlightHelpers = stage === DO_TASK && task.role === MONK;
   const highlightCraftBench = stage === DO_TASK && (task.role === POTTER || task.role === CLERK);
   const enableMoveToSales = stage === DO_TASK && task.role === CLERK;
@@ -56,7 +64,7 @@ function App() {
         <button onClick={startGame}>Start Game</button>
         </div> }
       <div className={`${stage === PREGAME ? "blur" : ''} container`}>
-        <h4>Stage: {stage === DO_TASK ? roles[task.role].taskInstructions : stage}</h4>
+<h4>Stage: {stage === DO_TASK ? roles[task.role].taskInstructions : stage} (current score: {salesScore + worksScore})</h4>
         <div className="decks border">
           <Deck
             deck={deck}
@@ -68,7 +76,7 @@ function App() {
       
         <Floor 
           floor={floor} 
-          doTask={highlightFloor ? getTaskFunction() : () => {}}
+          doTask={highlightFloor ? taskFunction : () => {}}
           highlight={highlightFloor} />
 
         <div className="helpers-bench-and-sales border">
@@ -79,27 +87,32 @@ function App() {
             craftBench={craftBench} 
             highlight={highlightCraftBench} 
             enableMoveToSales
-            moveToSales={enableMoveToSales ? getTaskFunction() : () => {}}
+            moveToSales={enableMoveToSales ? taskFunction : () => {}}
             />
           <Sales 
             sales={ sales }
+            salesScore={salesScore}
+            coveredMap={coveredMap}
             highlight={enableMoveToSales} />
         </div>
 
-        <Works works={works} />
+        <Works works={works} worksScore={worksScore}/>
 
         <div className="task-and-hand border">
           <Task 
             task={ task } 
             highlight={stage === DO_TASK} 
             canCraft={canCraft}
-            craft={craft}
-            doTask={ tailorIsClickable ? getTaskFunction() : () => {} }
+            craft={craftOrSmith}
+            doTask={ tailorIsClickable ? taskFunction : () => {} }
             pray={pray} />
           <Hand 
             placeTask={ placeTask } 
             hand={ hand }
+            taskFunction={taskFunction}
+            smithingTime={smithingTime}
             highlight={highlightHand}
+            canSmithMap={canSmithMap}
             pray={pray}  />
         </div>
 

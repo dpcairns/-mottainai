@@ -186,8 +186,12 @@ button {
 button:enabled {
   cursor: pointer;
   border: solid 1px black;
-  background-color: lightcyan;
-  animation: pulse 2s infinite;
+  background-color: pink;
+  animation: pulse 1s infinite;
+}
+
+.wiggle {
+  animation: wiggle 2s infinite;
 }
 
 
@@ -224,4 +228,13 @@ button:enabled {
     transform: scale(0.99);
     box-shadow: 1px 1px 1px 1px lightgrey;
 	}
+}
+
+
+@keyframes wiggle {
+  0% {transform: rotate(10deg);}
+  25% {transform: rotate(-10deg);}
+  50% {transform: rotate(20deg);}
+  75% {transform: rotate(-5deg);}
+  100% {transform: rotate(0deg);}
 }
